@@ -1,5 +1,6 @@
 /**
  * Configuración de la aplicación Express
+ * Optimizado para serverless (Vercel)
  */
 
 import express from 'express';
@@ -7,19 +8,16 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import config from './config/env.js';
-import { connectDB } from './config/mongodb.js';
 import orderRoutes from './routes/orderRoutes.js';
 import { errorHandler } from './utils/errors.js';
 
 const app = express();
 
 /**
- * Conectar a MongoDB al iniciar la app
+ * NOTA: En serverless (Vercel), NO conectamos a MongoDB aquí.
+ * La conexión se establece on-demand en cada request.
+ * Esto es necesario porque las funciones serverless son efímeras.
  */
-connectDB().catch(err => {
-  console.error('Error fatal al conectar con MongoDB:', err);
-  process.exit(1);
-});
 
 /**
  * Middlewares de seguridad
